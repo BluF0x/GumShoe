@@ -1,0 +1,12 @@
+﻿  main.cpp
+C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,96): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
+C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,80): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
+C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,64): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
+C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,48): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(15,66): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(15,72): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(15,79): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+  Node.cpp
+  NodeManager.cpp
+  Gerando Código...
+  LearningOpenGL.vcxproj -> C:\Users\josue\source\repos\LearningOpenGL\x64\Debug\LearningOpenGL.exe
