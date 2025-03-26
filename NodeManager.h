@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 #include <SDL3/SDL.h>
+#include <iostream>
 #include "Node.h"
 #include "Entity.h"
 
@@ -26,25 +27,17 @@ public:
 		temp->next = newNode;
 		last = newNode;
 	}
-
-	bool renderNode(SDL_Renderer renderer) {
-		Node<T>* temp = head;
-		while (temp != last || !temp->next) {
-			if constexpr ()
-			temp->object->render(renderer);
-
-		}
-
-	}
-
 };
 
-class NodeManager<Entity> {
+template <>
+class NodeManager<Entity> 
+{
+public:
 	Node<Entity>* head;
 	Node<Entity>* last;
 
 	NodeManager(Entity* obj) {
-		Node<Entity>* newNode = new Node<T>(obj);
+		Node<Entity>* newNode = new Node<Entity>(obj);
 		head = newNode;
 		last = newNode;
 	}
@@ -59,14 +52,21 @@ class NodeManager<Entity> {
 		last = newNode;
 	}
 
-	bool renderNode(SDL_Renderer renderer) {
-		Node<T>* temp = head;
-		while (temp != last || !temp->next) {
-			if constexpr ()
+	void renderAllNodes(SDL_Renderer* renderer) {
+		Node<Entity>* temp = head;
+		while (temp) {
 			temp->object->render(renderer);
-
+			temp = temp->next;
 		}
+	}
 
+	Entity* checkSelectedNodes(SDL_FPoint mousePos) {
+		Node<Entity>* temp = head;
+		while (temp) {
+			if (temp->object->checkSelection(mousePos)) return temp->object;
+			temp = temp->next;
+		}
+		return nullptr;
 	}
 
 

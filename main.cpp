@@ -1,9 +1,11 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <iostream>
 #include "Note.h"
 #include "Node.h"
 #include "NodeManager.h"
+#include "User.h"
 
 
 /* We will use this renderer to draw into this window every frame. */
@@ -15,6 +17,8 @@ static int win_width = 1080;
 static Note* testNote = new Note({150.0, 150.0}, 100.0, 400.0, { 0.89, 0.639, 0.737 });
 static Note* testNote2 = new Note({300.0, 300.0}, 100.0, 400.0, { 0.89, 0.639, 0.737 });
 static NodeManager<Entity>* entityList = new NodeManager<Entity>(testNote);
+
+static User* user = new User();
 
 
 /* This function runs once at startup. */
@@ -42,6 +46,19 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 {
     if (event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
+    } 
+    else if (event->type == SDL_EVENT_MOUSE_MOTION) {
+        float mouseX = event->motion.x;
+        float mouseY = event->motion.y;
+        user->setMousePos(mouseX, mouseY);
+    }
+    else if (event->type == SDL_EVENT_KEY_DOWN) {
+        if (event->key.key == SDLK_U) {
+            user;
+            entityList->head;
+            entityList->last;
+            std::cout << "Hello World" << std::endl;
+        }
     }
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
@@ -49,13 +66,13 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
+    user->selection = entityList->checkSelectedNodes(user->getMousePos());
 
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);
 
-    entityList->head->object->render(renderer);
-
+    entityList->renderAllNodes(renderer);
 
     /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(renderer);
