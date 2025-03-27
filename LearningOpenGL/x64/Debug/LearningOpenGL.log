@@ -1,12 +1,12 @@
 ﻿  Entity.cpp
   NodeManager.cpp
   Note.cpp
+  User.cpp
+  main.cpp
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,96): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,80): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,64): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,48): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-  User.cpp
-  main.cpp
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,96): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,80): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
 C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,64): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
