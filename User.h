@@ -5,8 +5,35 @@ class User
 {
 private:
 	SDL_FPoint mousePos = { 0, 0 };
-public:
 	Entity* selection = nullptr;
+	Entity* hover = nullptr;
+public:
+	Entity* getHover() {
+		return hover;
+	}
+
+	Entity* getSelection() {
+		return selection;
+	}
+
+	void setHover(Entity* inHover) {
+		if (inHover) {
+			hover = inHover;
+			hover->setHover(true);
+		}
+		else if (!inHover && hover) {
+			hover->setHover(false);
+			hover = nullptr;
+		}
+	}
+
+	void setSelection() {
+		if (selection != hover) {
+			if (selection) selection->setSelected(false);
+			selection = hover;
+			if (selection) selection->setSelected(true);
+		}
+	}
 	
 	void setMousePos(float x, float y) {
 		mousePos.x = x;

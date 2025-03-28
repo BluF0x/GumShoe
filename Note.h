@@ -6,58 +6,101 @@ class Note : public Entity
 {
 public:
 	const int indices[6] = {0, 1, 2, 1, 2, 3};
+	float zPos = 1.0f;
+	float zPosMin = 1.0f;
 	SDL_FColor currentColor;
 	SDL_FColor selectionColor;
 	SDL_FColor primaryColor;
+	SDL_FColor shadowColor;
 	SDL_Vertex vertices[4];
-	float width;
-	float height;
+	SDL_Vertex shadowVertices[4];
+	
 
 	void render(SDL_Renderer* renderer) {
-		SDL_SetRenderDrawColor(renderer, currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+		
+	//	SDL_SetRenderDrawColor(renderer, currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+		SDL_RenderGeometry(renderer, NULL, shadowVertices, 4, indices, SDL_arraysize(indices));
 		SDL_RenderGeometry(renderer, NULL, vertices, 4, indices, SDL_arraysize(indices));
 	}
 
-	void calcVertices() {
-		vertices[0].color = currentColor;
-		vertices[0].position.x = position.x;
-		vertices[0].position.y = position.y;
-		vertices[0].tex_coord.x = NULL ;
-		vertices[0].tex_coord.y = NULL ;
-
-		vertices[1].color = currentColor;
-		vertices[1].position.x = position.x + width;
-		vertices[1].position.y = position.y;
-		vertices[1].tex_coord.x = NULL ;
-		vertices[1].tex_coord.y = NULL ;
-
-		vertices[2].color = currentColor;
-		vertices[2].position.x = position.x;
-		vertices[2].position.y = position.y + height;
-		vertices[2].tex_coord.x = NULL ;
-		vertices[2].tex_coord.y = NULL ;
-
-		vertices[3].color = currentColor;
-		vertices[3].position.x = position.x + width;
-		vertices[3].position.y = position.y + height;
-		vertices[3].tex_coord.x = NULL ;
-		vertices[3].tex_coord.y = NULL ;
-
+	void calcShadowVertices() {
+		for (int i = 0; i < 4; i++) {
+			shadowVertices[i].position.x = vertices[i].position.x + width * (zPos - 1.0f) +1.f;
+			shadowVertices[i].position.y = vertices[i].position.y + height * (zPos - 1.0f) +1.f;
+			shadowVertices[i].color =  shadowColor ;
+			shadowVertices[i].tex_coord.x = NULL ;
+			shadowVertices[i].tex_coord.y = NULL ;
+		}
 	}
 
-	Note(SDL_FPoint pos, float inWidth = 100.0, float inHeight = 200.0, SDL_FColor color = {1.0, 1.0, 1.0, 1.0}) {
+	void calcVertices() {
+		for (int i = 0; i < 4; i++) {
+			vertices[i].color = currentColor;
+			vertices[i].tex_coord.x = NULL ;
+			vertices[i].tex_coord.y = NULL ;
+		}
+
+		float xScale = width * (zPos - 1.0f);
+		float yScale = height * (zPos - 1.0f);
+
+		vertices[0].position.x = position.x - xScale ;
+		vertices[0].position.y = position.y - yScale;
+
+		vertices[1].position.x = position.x + width +xScale ;
+		vertices[1].position.y = position.y - yScale;
+
+		vertices[2].position.x = position.x - xScale;
+		vertices[2].position.y = position.y + height + yScale ;
+
+		vertices[3].position.x = position.x + width + xScale;
+		vertices[3].position.y = position.y + height + yScale;
+		calcShadowVertices();
+	}
+
+	void changeZ() {
+		if (selected) {
+			zPos = 1.1f;
+		}
+		else {
+			zPos = 1.0f;
+		}
+	}
+
+	void updateColor() {
+		currentColor = (hovered) ? selectionColor : primaryColor;
+	}
+
+	void setSelected(bool selectState) {
+		selected = selectState;
+		changeZ();
+		calcVertices();
+	}
+
+	void setHover(bool hoverState) {
+		hovered = hoverState;
+		updateColor();
+		calcVertices();
+	}
+
+	Note(SDL_Color backgroundColor, SDL_FPoint pos, float inWidth = 100.0, float inHeight = 200.0, SDL_FColor color = {1.0, 1.0, 1.0, 1.0} ) {
 		primaryColor = color;
 		currentColor = color;
+		shadowColor = {
+		backgroundColor.r /100.f * 0.2f,
+		backgroundColor.g /100.f  * 0.2f,
+		backgroundColor.b /100.f  * 0.2f,
+		backgroundColor.a /100.f  * 0.8f,
+		};
 		selectionColor = {
-		color.r * 0.5f,
-		color.g * 0.5f,
-		color.b * 0.5f,
-		color.a = 1.0f
+		color.r * 0.8f,
+		color.g * 0.8f,
+		color.b * 0.8f,
+		color.a * 1.0f
 		};
 		position = pos;
 		width = inWidth;
 		height = inHeight;
-		
+	    	
 		calcVertices();
 	}
 };

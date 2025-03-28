@@ -1,21 +1,12 @@
-﻿  Entity.cpp
-  NodeManager.cpp
-  Note.cpp
-  User.cpp
+﻿  EntityManager.cpp
+C:\Users\josue\source\repos\LearningOpenGL\EntityManager.h(25,14): warning C4267: 'inicializando': conversão de 'size_t' para 'int', possível perda de dados
   main.cpp
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,96): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,80): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,64): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,48): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,96): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,80): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,64): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\Note.h(17,48): warning C4244: 'argumento': conversão de 'float' para 'Uint8', possível perda de dados
-C:\Users\josue\source\repos\LearningOpenGL\main.cpp(17,66): warning C4305: 'inicializando': truncamento de 'double' para 'float'
-C:\Users\josue\source\repos\LearningOpenGL\main.cpp(17,72): warning C4305: 'inicializando': truncamento de 'double' para 'float'
-C:\Users\josue\source\repos\LearningOpenGL\main.cpp(17,79): warning C4305: 'inicializando': truncamento de 'double' para 'float'
-C:\Users\josue\source\repos\LearningOpenGL\main.cpp(18,67): warning C4305: 'inicializando': truncamento de 'double' para 'float'
-C:\Users\josue\source\repos\LearningOpenGL\main.cpp(18,73): warning C4305: 'inicializando': truncamento de 'double' para 'float'
-C:\Users\josue\source\repos\LearningOpenGL\main.cpp(18,80): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\EntityManager.h(25,14): warning C4267: 'inicializando': conversão de 'size_t' para 'int', possível perda de dados
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(19,83): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(19,89): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(19,96): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(20,84): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(20,90): warning C4305: 'inicializando': truncamento de 'double' para 'float'
+C:\Users\josue\source\repos\LearningOpenGL\main.cpp(20,97): warning C4305: 'inicializando': truncamento de 'double' para 'float'
   Gerando Código...
   LearningOpenGL.vcxproj -> C:\Users\josue\source\repos\LearningOpenGL\x64\Debug\LearningOpenGL.exe
