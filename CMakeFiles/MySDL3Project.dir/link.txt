@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/MySDL3Project.dir/link.d CMakeFiles/MySDL3Project.dir/main.cpp.o -o MySDL3Project  /usr/lib/libSDL3.so.0.2.8
