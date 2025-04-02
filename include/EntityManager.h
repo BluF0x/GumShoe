@@ -16,6 +16,7 @@ public:
 	}
 
 	bool forwardEntity(Entity* entity) {
+		if (!entity) return 0; //Returns if no selection
 		bool entityFound = false;
 		for (int i = 0; i < entityList.size(); i++) {
 			if (!entityFound) {

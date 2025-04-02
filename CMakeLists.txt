@@ -14,7 +14,7 @@ endif()
 find_package(SDL3 REQUIRED)
 
 # Add your executable
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp "include/Tool.h" "include/Tool.cpp")
 
 # Add include directories
 target_include_directories(${PROJECT_NAME} PRIVATE include)

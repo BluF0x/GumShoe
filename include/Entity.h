@@ -9,6 +9,7 @@ public:
 	bool hovered = false;
 	float width;
 	float height;
+	SDL_FPoint relativeDistance;
 	SDL_FPoint position;
 	SDL_Vertex vertices[4];
 
@@ -20,6 +21,26 @@ public:
 
 	virtual void setSelected(bool selectState) {
 		selected = selectState;
+	}
+
+	virtual void calcVertices() {};
+	
+	void setRelativeDistance(SDL_FPoint point) {
+		relativeDistance = {
+			relativeDistance.x = point.x - position.x,
+			relativeDistance.y = point.y - position.y,
+		};
+	}
+
+	void moveTo(SDL_FPoint location,  bool isOrigin = false) {
+		if (isOrigin) {
+			position = { location.x , location.y };
+		}
+		else {
+			position.x = location.x - relativeDistance.x;
+			position.y = location.y - relativeDistance.y;
+		}
+		calcVertices();
 	}
 
 	bool checkSelection(SDL_FPoint mousePos) {

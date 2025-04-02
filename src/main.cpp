@@ -3,6 +3,7 @@
 #include <SDL3/SDL_main.h>
 #include <vector>
 #include <iostream>
+#include <string>
 #include "Note.h"
 #include "Node.h"
 #include "EntityManager.h"
@@ -17,7 +18,7 @@ static int win_width = 1080;
 static SDL_Color backgroundColor = { 138, 121, 81, 255 };
 
 static Note* testNote = new Note(backgroundColor, {150.0, 150.0}, 200.0, 400.0, { 0.89, 0.639, 0.737 });
-static Note* testNote2 = new Note(backgroundColor, {300.0, 300.0}, 300.0, 400.0, { 0.89, 0.639, 0.737 });
+static Note* testNote2 = new Note(backgroundColor, {300.0, 300.0}, 300.0, 400.0, {0.89, 0.875, 0.035});
 static Note* testNote3 = new Note(backgroundColor, {500.0, 300.0}, 200.0, 200.0, { 0.89, 0.639, 0.737 });
 static EntityManager* entityManager = new EntityManager();
 
@@ -50,22 +51,48 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 /* This function runs when a new event (mouse input, keypresses, etc) occurs. */
 SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 {
-    if (event->type == SDL_EVENT_QUIT) {
+    if (event->type == SDL_EVENT_QUIT) 
+    {
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
     } 
-    else if (event->type == SDL_EVENT_MOUSE_MOTION) {
-        float mouseX = event->motion.x;
-        float mouseY = event->motion.y;
-        user->setMousePos(mouseX, mouseY);
-        user->setHover(entityManager->checkMouse(user->getMousePos()));
-    }
-    else if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+    else if (event->type == SDL_EVENT_MOUSE_MOTION) 
+    {
+        SDL_FPoint mousePos = {
+            mousePos.x = event->motion.x + event->motion.xrel,
+            mousePos.y = event->motion.y + event->motion.yrel,
+        };
+
+		user->setMousePos(mousePos.x, mousePos.y);
+
+		if (user->isActive && user->getSelection() != nullptr) {
+			// When dragging, update position without altering hover state.
+			user->getSelection()->moveTo(user->getMousePos(), false);
+		}
+		else {
+			// Only update hover state when not dragging.
+			user->setHover(entityManager->checkMouse(user->getMousePos()));
+		}
+	}
+    else if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) 
+    {
         if (event->button.button == 1) {
+            std::cout << "click 1" << std::endl;
+            user->isActive = true;
             user->setSelection();
             entityManager->forwardEntity(user->getSelection());
+            if (user->getSelection()) {
+                user->getSelection()->setRelativeDistance(user->getMousePos());
+            }
         }
     }
-    else if (event->type == SDL_EVENT_KEY_DOWN) {
+    else if (event->type = SDL_EVENT_MOUSE_BUTTON_UP)
+    {
+        if (event->button.button == 1) {
+            user->isActive = false;
+        }
+    }
+    else if (event->type == SDL_EVENT_KEY_DOWN) 
+    {
         if (event->key.key == SDLK_U) {
             std::cout << "Hello World" << std::endl;
         }
@@ -80,6 +107,10 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);
+
+    std::string deltaPosStr = std::to_string(user->getMousePos().x);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+    SDL_RenderDebugText(renderer, 272, 100, deltaPosStr.c_str());
 
     entityManager->renderEntities(renderer);
 
