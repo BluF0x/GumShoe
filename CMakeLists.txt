@@ -7,19 +7,23 @@ project(GumShoe)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 # Find SDL3 package
+if (WIN32)
+	set(CMAKE_PREFIX_PATH "C:/SDL" ${CMAKE_PREFIX_PATH})
+endif()
 find_package(SDL3 REQUIRED)
 
 # Add your executable
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp)
+
+# Add include directories
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 # Link SDL3 to your project
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
 
 # Include SDL3 headers (optional, just in case)
-target_include_directories(${PROJECT_NAME} PRIVATE ${SDL3_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${SDL3_INCLUDE_DIRS})
 
 # Set the required flags for the linker if necessary
 if(APPLE)
