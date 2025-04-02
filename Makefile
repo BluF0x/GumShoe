@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named MySDL3Project
+# Target rules for targets named GumShoe
 
 # Build rule for target.
-MySDL3Project: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 MySDL3Project
-.PHONY : MySDL3Project
+GumShoe: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 GumShoe
+.PHONY : GumShoe
 
 # fast build rule for target.
-MySDL3Project/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/build
-.PHONY : MySDL3Project/fast
+GumShoe/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/build
+.PHONY : GumShoe/fast
 
 main.o: main.cpp.o
 .PHONY : main.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -142,7 +142,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -150,7 +150,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... MySDL3Project"
+	@echo "... GumShoe"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

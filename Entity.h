@@ -10,6 +10,7 @@ public:
 	float width;
 	float height;
 	SDL_FPoint position;
+	SDL_Vertex vertices[4];
 
 	virtual void render(SDL_Renderer* renderer) {};
 
@@ -22,8 +23,8 @@ public:
 	}
 
 	bool checkSelection(SDL_FPoint mousePos) {
-		bool xCheck = ((mousePos.x >= position.x) && (mousePos.x <= position.x + width));
-		bool yCheck = ((mousePos.y >= position.y) && (mousePos.y <= position.y + height));
+		bool xCheck = ((mousePos.x >= vertices[0].position.x) && (mousePos.x <= vertices[3].position.x ));
+		bool yCheck = ((mousePos.y >= vertices[0].position.y) && (mousePos.y <= vertices[3].position.y ));
 		return (xCheck && yCheck);
 	}
 };

@@ -63,11 +63,11 @@ CMAKE_BINARY_DIR = /home/blu/projetos/GumShoe
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/MySDL3Project.dir/all
+all: CMakeFiles/GumShoe.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/MySDL3Project.dir/codegen
+codegen: CMakeFiles/GumShoe.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -75,40 +75,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/MySDL3Project.dir/clean
+clean: CMakeFiles/GumShoe.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/MySDL3Project.dir
+# Target rules for target CMakeFiles/GumShoe.dir
 
 # All Build rule for target.
-CMakeFiles/MySDL3Project.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blu/projetos/GumShoe/CMakeFiles --progress-num=1,2 "Built target MySDL3Project"
-.PHONY : CMakeFiles/MySDL3Project.dir/all
+CMakeFiles/GumShoe.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blu/projetos/GumShoe/CMakeFiles --progress-num=1,2 "Built target GumShoe"
+.PHONY : CMakeFiles/GumShoe.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/MySDL3Project.dir/rule: cmake_check_build_system
+CMakeFiles/GumShoe.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/blu/projetos/GumShoe/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/MySDL3Project.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/GumShoe.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/blu/projetos/GumShoe/CMakeFiles 0
-.PHONY : CMakeFiles/MySDL3Project.dir/rule
+.PHONY : CMakeFiles/GumShoe.dir/rule
 
 # Convenience name for target.
-MySDL3Project: CMakeFiles/MySDL3Project.dir/rule
-.PHONY : MySDL3Project
+GumShoe: CMakeFiles/GumShoe.dir/rule
+.PHONY : GumShoe
 
 # codegen rule for target.
-CMakeFiles/MySDL3Project.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blu/projetos/GumShoe/CMakeFiles --progress-num=1,2 "Finished codegen for target MySDL3Project"
-.PHONY : CMakeFiles/MySDL3Project.dir/codegen
+CMakeFiles/GumShoe.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/blu/projetos/GumShoe/CMakeFiles --progress-num=1,2 "Finished codegen for target GumShoe"
+.PHONY : CMakeFiles/GumShoe.dir/codegen
 
 # clean rule for target.
-CMakeFiles/MySDL3Project.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MySDL3Project.dir/build.make CMakeFiles/MySDL3Project.dir/clean
-.PHONY : CMakeFiles/MySDL3Project.dir/clean
+CMakeFiles/GumShoe.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GumShoe.dir/build.make CMakeFiles/GumShoe.dir/clean
+.PHONY : CMakeFiles/GumShoe.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

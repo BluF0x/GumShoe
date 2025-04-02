@@ -12,7 +12,6 @@ public:
 	SDL_FColor selectionColor;
 	SDL_FColor primaryColor;
 	SDL_FColor shadowColor;
-	SDL_Vertex vertices[4];
 	SDL_Vertex shadowVertices[4];
 	
 

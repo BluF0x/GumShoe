@@ -18,6 +18,9 @@ public:
 
 	void setHover(Entity* inHover) {
 		if (inHover) {
+			if (inHover != hover && hover){
+				hover->setHover(false);
+			}
 			hover = inHover;
 			hover->setHover(true);
 		}
