@@ -18,6 +18,7 @@ static SDL_Color backgroundColor = { 138, 121, 81, 255 };
 
 static Note* testNote = new Note(backgroundColor, {150.0, 150.0}, 200.0, 400.0, { 0.89, 0.639, 0.737 });
 static Note* testNote2 = new Note(backgroundColor, {300.0, 300.0}, 300.0, 400.0, { 0.89, 0.639, 0.737 });
+static Note* testNote3 = new Note(backgroundColor, {500.0, 300.0}, 200.0, 200.0, { 0.89, 0.639, 0.737 });
 static EntityManager* entityManager = new EntityManager();
 
 static User* user = new User();
@@ -28,6 +29,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
     entityManager->addEntity(testNote);
     entityManager->addEntity(testNote2);
+    entityManager->addEntity(testNote3);
+
 
     SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
 
@@ -59,6 +62,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     else if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
         if (event->button.button == 1) {
             user->setSelection();
+            entityManager->forwardEntity(user->getSelection());
         }
     }
     else if (event->type == SDL_EVENT_KEY_DOWN) {

@@ -15,14 +15,22 @@ public:
 		entityList.push_back(entity);
 	}
 
-	bool forwardEntity(Enity* entity) {
-		int entityIndex;
-		for (int i = 0; i < entityList.size(); i++ ) {
-			if (entityList[i] == entity) { 
-				entityIndex = i;
-				break;
+	bool forwardEntity(Entity* entity) {
+		bool entityFound = false;
+		for (int i = 0; i < entityList.size(); i++) {
+			if (!entityFound) {
+				if (entityList[i] == entity) {
+					entityFound = true;
+				}
+			}
+			else {
+				entityList[i - 1] = entityList[i];
+				if (i == entityList.size() - 1) {
+					entityList[i] = entity;
+				}
 			}
 		}
+		return entityFound;
 	}
 
 	void renderEntities(SDL_Renderer* renderer) {
