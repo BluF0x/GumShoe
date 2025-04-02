@@ -1,7 +1,7 @@
 {
 	"InstallScripts" : 
 	[
-		"/home/blu/projetos/GumShoe/cmake_install.cmake"
+		"C:/Users/Josu/Desktop/Prog/GumShoe/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

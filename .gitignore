@@ -1,1 +1,42 @@
+
+# Build directories
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# Backup and temporary files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# IDE and editor files
+.idea/
+.vscode/
 .vs/
+*.code-workspace
+
+# Logs and debug files
+*.log
+*.dbg
+
+# Generated binaries and libraries
+bin/
+lib/
+*.a
+*.o
+*.so
+*.dll
+*.exe
+
+# Package manager files
+vcpkg_installed/
+CMakeUserPresets.json
+CMakePresets.json.user
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
