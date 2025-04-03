@@ -17,20 +17,24 @@ static int win_height = 720;
 static int win_width = 1080;
 static SDL_Color backgroundColor = { 138, 121, 81, 255 };
 
-static Note* testNote = new Note(backgroundColor, {150.0, 150.0}, 200.0, 400.0, { 0.89, 0.639, 0.737 });
-static Note* testNote2 = new Note(backgroundColor, {300.0, 300.0}, 300.0, 400.0, {0.89, 0.875, 0.035});
-static Note* testNote3 = new Note(backgroundColor, {500.0, 300.0}, 200.0, 200.0, { 0.89, 0.639, 0.737 });
+/* Test notes. If needed delete comment.
+static Note* testNote = new Note(backgroundColor, {150.0, 150.0}, 200.0, 400.0, { 0.89, 0.639, 0.737, 1.0f });
+static Note* testNote2 = new Note(backgroundColor, {300.0, 300.0}, 300.0, 400.0, {0.89, 0.875, 0.035, 1.0f});
+static Note* testNote3 = new Note(backgroundColor, {500.0, 300.0}, 200.0, 200.0, { 0.89, 0.639, 0.737, 1.0f });
+*/
 static EntityManager* entityManager = new EntityManager();
 
-static User* user = new User();
+static User* user = new User(backgroundColor);
 
 
 /* This function runs once at startup. */
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
 {
+    /* Teste notes. If needed delete comment.
     entityManager->addEntity(testNote);
     entityManager->addEntity(testNote2);
     entityManager->addEntity(testNote3);
+    */
 
 
     SDL_SetAppMetadata("Example Renderer Clear", "1.0", "com.example.renderer-clear");
@@ -45,6 +49,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
         return SDL_APP_FAILURE;
     }
 
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
     return SDL_APP_CONTINUE;  /* carry on with the program! */
 }
 
@@ -55,6 +61,20 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     {
         return SDL_APP_SUCCESS;  /* end the program, reporting success to the OS. */
     } 
+
+    // key press 
+    else if (event->type == SDL_EVENT_KEY_DOWN) 
+    {
+        if (event->key.key == SDLK_1) {
+            user->currentTool = Tools::SELECTION;
+        }
+        else if (event->key.key == SDLK_2) {
+            user->currentTool = Tools::NOTE;
+        }
+        //std::cout << "Current tool: " << user->currentTool << std::endl;
+    }
+
+    // mouse movement 
     else if (event->type == SDL_EVENT_MOUSE_MOTION) 
     {
         SDL_FPoint mousePos = {
@@ -64,7 +84,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 
 		user->setMousePos(mousePos.x, mousePos.y);
 
-		if (user->isActive && user->getSelection() != nullptr) {
+		if (user->isActive && user->getSelection() != nullptr && user->currentTool == Tools::SELECTION) {
 			// When dragging, update position without altering hover state.
 			user->getSelection()->moveTo(user->getMousePos(), false);
 		}
@@ -73,28 +93,36 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 			user->setHover(entityManager->checkMouse(user->getMousePos()));
 		}
 	}
+
+    // mouse button down
     else if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) 
     {
         if (event->button.button == 1) {
-            std::cout << "click 1" << std::endl;
-            user->isActive = true;
-            user->setSelection();
-            entityManager->forwardEntity(user->getSelection());
-            if (user->getSelection()) {
-                user->getSelection()->setRelativeDistance(user->getMousePos());
+            switch (user->currentTool) {
+            case 0:
+				user->isActive = true;
+				user->setSelection();
+				entityManager->forwardEntity(user->getSelection());
+				if (user->getSelection()) {
+					user->getSelection()->setRelativeDistance(user->getMousePos());
+				}
+                break;
+            case 1:
+                SDL_FColor updatedColor = user->templateNote->primaryColor;
+                updatedColor.a = 1.0f;
+                entityManager->addEntity(new Note(*user->templateNote));
+                entityManager->getLastEntity()->setColor(updatedColor);
+                
+                break;
             }
         }
     }
+
+    // mouse button release
     else if (event->type = SDL_EVENT_MOUSE_BUTTON_UP)
     {
         if (event->button.button == 1) {
             user->isActive = false;
-        }
-    }
-    else if (event->type == SDL_EVENT_KEY_DOWN) 
-    {
-        if (event->key.key == SDLK_U) {
-            std::cout << "Hello World" << std::endl;
         }
     }
     return SDL_APP_CONTINUE;  /* carry on with the program! */
@@ -103,7 +131,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);
@@ -113,6 +140,7 @@ SDL_AppResult SDL_AppIterate(void* appstate)
     SDL_RenderDebugText(renderer, 272, 100, deltaPosStr.c_str());
 
     entityManager->renderEntities(renderer);
+    user->renderToolPreview(renderer);
 
     /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(renderer);

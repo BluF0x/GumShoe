@@ -25,12 +25,15 @@ public:
 
 	virtual void calcVertices() {};
 	
+	virtual void setColor(SDL_FColor color) {};
+	
 	void setRelativeDistance(SDL_FPoint point) {
 		relativeDistance = {
 			relativeDistance.x = point.x - position.x,
 			relativeDistance.y = point.y - position.y,
 		};
 	}
+
 
 	void moveTo(SDL_FPoint location,  bool isOrigin = false) {
 		if (isOrigin) {

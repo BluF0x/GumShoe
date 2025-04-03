@@ -2,6 +2,12 @@
 #include <SDL3/SDL.h>
 #include "Entity.h"
 
+
+enum Tools {
+	SELECTION,
+	NOTE
+};
+
 class User
 {
 private:
@@ -10,8 +16,11 @@ private:
 	SDL_FPoint deltaPos = { 0, 0 };
 	Entity* selection = nullptr;
 	Entity* hover = nullptr;
+
 public:
+	Note* templateNote = nullptr;
 	bool isActive = false;
+	enum Tools currentTool = Tools::SELECTION;
 
 	Entity* getHover() {
 		return hover;
@@ -21,6 +30,17 @@ public:
 		return selection;
 	}
 
+	void renderToolPreview(SDL_Renderer* renderer) {
+		switch (currentTool) {
+		case 0:
+			break;
+		case 1:
+			templateNote->moveTo(mousePos, true);
+			templateNote->render(renderer);
+		default:
+			break;
+		}
+	}
 
 	void setHover(Entity* inHover) {
 		if (inHover) {
@@ -35,6 +55,7 @@ public:
 			hover = nullptr;
 		}
 	}
+
 
 	void setSelection() {
 		if (selection != hover) {
@@ -63,6 +84,20 @@ public:
 
 	SDL_FPoint getDeltaPos() {
 		return deltaPos;
+	}
+
+	User(SDL_Color backgroundColor) {
+		templateNote = new Note(
+			backgroundColor,
+			mousePos,
+			200.f,
+			200.f,
+			{ 0.89f, 0.875f, 0.035f, 0.5f}
+		);
+	}
+
+	~User() {
+		delete templateNote;
 	}
 };
 

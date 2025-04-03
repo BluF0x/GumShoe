@@ -2,8 +2,18 @@
 #include <SDL3/SDL.h>
 #include "Entity.h"
 
+
 class Note : public Entity
 {
+private:
+	void setSelectionColor(SDL_FColor color) {
+		selectionColor = {
+			color.r * 0.8f,
+			color.g * 0.8f,
+			color.b * 0.8f,
+			color.a * 1.0f
+		};
+	}
 public:
 	const int indices[6] = {0, 1, 2, 1, 2, 3};
 	float zPos = 1.0f;
@@ -13,7 +23,6 @@ public:
 	SDL_FColor primaryColor;
 	SDL_FColor shadowColor;
 	SDL_Vertex shadowVertices[4];
-	
 
 	void render(SDL_Renderer* renderer) {
 		
@@ -24,8 +33,8 @@ public:
 
 	void calcShadowVertices() {
 		for (int i = 0; i < 4; i++) {
-			shadowVertices[i].position.x = vertices[i].position.x + width * (zPos - 1.0f) +1.f;
-			shadowVertices[i].position.y = vertices[i].position.y + height * (zPos - 1.0f) +1.f;
+			shadowVertices[i].position.x = vertices[i].position.x + width * (zPos - 1.0f) +2.f;
+			shadowVertices[i].position.y = vertices[i].position.y + height * (zPos - 1.0f) +2.f;
 			shadowVertices[i].color =  shadowColor ;
 			shadowVertices[i].tex_coord.x = NULL ;
 			shadowVertices[i].tex_coord.y = NULL ;
@@ -65,6 +74,14 @@ public:
 		}
 	}
 
+	void setColor(SDL_FColor color) {
+		primaryColor = color;
+		setSelectionColor(color);
+		updateColor(); // just in case
+		calcVertices();
+	}
+
+
 	void updateColor() {
 		currentColor = (hovered) ? selectionColor : primaryColor;
 	}
@@ -85,17 +102,12 @@ public:
 		primaryColor = color;
 		currentColor = color;
 		shadowColor = {
-		backgroundColor.r /100.f * 0.2f,
-		backgroundColor.g /100.f  * 0.2f,
-		backgroundColor.b /100.f  * 0.2f,
-		backgroundColor.a /100.f  * 0.8f,
+		backgroundColor.r /100.f * 0.15f,
+		backgroundColor.g /100.f  * 0.15f,
+		backgroundColor.b /100.f  * 0.15f,
+		0.5f
 		};
-		selectionColor = {
-		color.r * 0.8f,
-		color.g * 0.8f,
-		color.b * 0.8f,
-		color.a * 1.0f
-		};
+		setSelectionColor(color);
 		position = pos;
 		width = inWidth;
 		height = inHeight;

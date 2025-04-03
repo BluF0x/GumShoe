@@ -15,6 +15,21 @@ public:
 		entityList.push_back(entity);
 	}
 
+	int getEntityIndex(Entity* entity) {
+		for (int i = 0; i < entityList.size(); i++) {
+			if (entity = entityList[i]) return i;
+		}
+	};
+
+	Entity* getEntityAtIndex(int index) {
+		if (index > entityList.size() || index < 0) return nullptr;
+		return entityList[index];
+	}
+
+	Entity* getLastEntity() {
+		return entityList[entityList.size() - 1];
+	}
+
 	bool forwardEntity(Entity* entity) {
 		if (!entity) return 0; //Returns if no selection
 		bool entityFound = false;
@@ -48,6 +63,7 @@ public:
 		return nullptr;
 	}
 
+	
 
 	
 };
