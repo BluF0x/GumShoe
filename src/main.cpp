@@ -9,6 +9,9 @@
 #include "EntityManager.h"
 #include "User.h"
 
+//TODO the user selection isn't being updated, which is the likely cause of the error 
+//with the note not being properly selected.
+//-Activate timer when mouse isn't hovering the selection, and update both user and selection
 
 /* We will use this renderer to draw into this window every frame. */
 static SDL_Window* window = NULL;
@@ -66,10 +69,10 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     else if (event->type == SDL_EVENT_KEY_DOWN) 
     {
         if (event->key.key == SDLK_1) {
-            user->currentTool = Tools::SELECTION;
+            user->changeTool(Tools::SELECTION);
         }
         else if (event->key.key == SDLK_2) {
-            user->currentTool = Tools::NOTE;
+            user->changeTool(Tools::NOTE);
         }
         //std::cout << "Current tool: " << user->currentTool << std::endl;
     }
@@ -131,6 +134,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
+
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);

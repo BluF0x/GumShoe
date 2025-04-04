@@ -6,6 +6,8 @@
 class Note : public Entity
 {
 private:
+	SDL_TimerID timer;
+
 	void setSelectionColor(SDL_FColor color) {
 		selectionColor = {
 			color.r * 0.8f,
@@ -14,6 +16,13 @@ private:
 			color.a * 1.0f
 		};
 	}
+
+	static Uint32 deselectCallback(void* userdata, SDL_TimerID timerID, Uint32 interval) {
+		Note* note = static_cast<Note*>(userdata); // Convert back to Note object
+		note->setSelected(false);
+		return 0;
+	}
+
 public:
 	const int indices[6] = {0, 1, 2, 1, 2, 3};
 	float zPos = 1.0f;
@@ -88,6 +97,9 @@ public:
 
 	void setSelected(bool selectState) {
 		selected = selectState;
+		if (selected && timer) {
+			SDL_RemoveTimer(timer);
+		}
 		changeZ();
 		calcVertices();
 	}
@@ -96,6 +108,14 @@ public:
 		hovered = hoverState;
 		updateColor();
 		calcVertices();
+		if (selected) {
+			if (!hovered) {
+				timer = SDL_AddTimer(1000, deselectCallback, this);
+			}
+			else {
+				SDL_RemoveTimer(timer);
+			}
+		}
 	}
 
 	Note(SDL_Color backgroundColor, SDL_FPoint pos, float inWidth = 100.0, float inHeight = 200.0, SDL_FColor color = {1.0, 1.0, 1.0, 1.0} ) {

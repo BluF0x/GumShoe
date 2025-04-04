@@ -42,6 +42,19 @@ public:
 		}
 	}
 
+	void changeTool(Tools tool) {
+		switch (tool) {
+		case 0:
+			SDL_ShowCursor();
+			currentTool = Tools::SELECTION;
+			break;
+		case 1:
+			SDL_HideCursor();
+			currentTool = Tools::NOTE;
+			break;
+		}
+	}
+
 	void setHover(Entity* inHover) {
 		if (inHover) {
 			if (inHover != hover && hover){
