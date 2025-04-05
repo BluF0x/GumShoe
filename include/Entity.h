@@ -13,43 +13,14 @@ public:
 	SDL_FPoint position;
 	SDL_Vertex vertices[4];
 
-	virtual void render(SDL_Renderer* renderer) {};
+	virtual void render(SDL_Renderer* renderer);
 
-	virtual void setHover(bool hoverState) {
-		hovered = hoverState;
-	}
+	virtual void setHover(bool hoverState);
+	virtual void setSelected(bool selectState);
+	virtual void calcVertices();
+	virtual void setColor(SDL_FColor color);
 
-	virtual void setSelected(bool selectState) {
-		selected = selectState;
-	}
-
-	virtual void calcVertices() {};
-	
-	virtual void setColor(SDL_FColor color) {};
-	
-	void setRelativeDistance(SDL_FPoint point) {
-		relativeDistance = {
-			relativeDistance.x = point.x - position.x,
-			relativeDistance.y = point.y - position.y,
-		};
-	}
-
-
-	void moveTo(SDL_FPoint location,  bool isOrigin = false) {
-		if (isOrigin) {
-			position = { location.x , location.y };
-		}
-		else {
-			position.x = location.x - relativeDistance.x;
-			position.y = location.y - relativeDistance.y;
-		}
-		calcVertices();
-	}
-
-	bool checkSelection(SDL_FPoint mousePos) {
-		bool xCheck = ((mousePos.x >= vertices[0].position.x) && (mousePos.x <= vertices[3].position.x ));
-		bool yCheck = ((mousePos.y >= vertices[0].position.y) && (mousePos.y <= vertices[3].position.y ));
-		return (xCheck && yCheck);
-	}
+	void setRelativeDistance(SDL_FPoint point);
+	void moveTo(SDL_FPoint location, bool isOrigin = false);
+	bool checkSelection(SDL_FPoint mousePos);
 };
-
