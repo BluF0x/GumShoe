@@ -15,6 +15,9 @@ GumShoe.dir/
 *.swo
 *.bak
 *.tmp
+*.sln
+*.vcxproj
+*.vcxproj.user
 
 # IDE and editor files
 .idea/
