@@ -1,7 +1,10 @@
 #include "Entity.h"
 
 void Entity::render(SDL_Renderer* renderer) {
-	// Virtual - typically overridden by derived classes
+	if (isVisible) {
+		SDL_RenderGeometry(renderer, NULL, shadowVertices, 4, indices, SDL_arraysize(indices));
+		SDL_RenderGeometry(renderer, NULL, vertices, 4, indices, SDL_arraysize(indices));
+	}
 }
 
 void Entity::setHover(bool hoverState) {
@@ -13,11 +16,49 @@ void Entity::setSelected(bool selectState) {
 }
 
 void Entity::calcVertices() {
-	// Virtual - typically overridden by derived classes
+	for (int i = 0; i < 4; i++) {
+		vertices[i].color = currentColor;
+		vertices[i].tex_coord.x = 0;
+		vertices[i].tex_coord.y = 0;
+	}
+
+	float xScale = width * (zPos - 1.0f);
+	float yScale = height * (zPos - 1.0f);
+
+	vertices[0].position.x = position.x - xScale;
+	vertices[0].position.y = position.y - yScale;
+
+	vertices[1].position.x = position.x + width + xScale;
+	vertices[1].position.y = position.y - yScale;
+
+	vertices[2].position.x = position.x - xScale;
+	vertices[2].position.y = position.y + height + yScale;
+
+	vertices[3].position.x = position.x + width + xScale;
+	vertices[3].position.y = position.y + height + yScale;
+}
+
+void Entity::calcShadowVertices() {
+	for (int i = 0; i < 4; i++) {
+		shadowVertices[i].position.x = vertices[i].position.x + width * (zPos - 1.0f) + 2.f;
+		shadowVertices[i].position.y = vertices[i].position.y + height * (zPos - 1.0f) + 2.f;
+		shadowVertices[i].color = shadowColor;
+		shadowVertices[i].tex_coord.x = 0;
+		shadowVertices[i].tex_coord.y = 0;
+	}
+}
+
+void Entity::recalculateVertex() {
+	calcVertices();
+	calcShadowVertices();
+}
+
+void Entity::changeZ(float z) {
+	zPos = z;
 }
 
 void Entity::setColor(SDL_FColor color) {
-	// Virtual - typically overridden by derived classes
+	currentColor = color;
 }
 
 void Entity::setRelativeDistance(SDL_FPoint point) {
@@ -35,12 +76,17 @@ void Entity::moveTo(SDL_FPoint location, bool isOrigin) {
 		position.x = location.x - relativeDistance.x;
 		position.y = location.y - relativeDistance.y;
 	}
-	calcVertices();
+	recalculateVertex();
 }
 
 bool Entity::checkSelection(SDL_FPoint mousePos) {
-	bool xCheck = ((mousePos.x >= vertices[0].position.x) && (mousePos.x <= vertices[3].position.x));
-	bool yCheck = ((mousePos.y >= vertices[0].position.y) && (mousePos.y <= vertices[3].position.y));
-	return (xCheck && yCheck);
+	if (isSelectable) {
+		bool xCheck = ((mousePos.x >= vertices[0].position.x) && (mousePos.x <= vertices[3].position.x));
+		bool yCheck = ((mousePos.y >= vertices[0].position.y) && (mousePos.y <= vertices[3].position.y));
+		return (xCheck && yCheck);
+	}
+	else {
+		return false;
+	}
 }
 
