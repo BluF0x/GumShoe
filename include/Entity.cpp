@@ -48,6 +48,72 @@ void Entity::calcShadowVertices() {
 	}
 }
 
+void Entity::resize(int direction, SDL_FPoint mousePos) {
+	setRelativeDistance(mousePos);
+	switch (direction) {
+	case 0: //top left
+		position = mousePos;
+		width += abs(relativeDistance.x);
+		height += abs(relativeDistance.y);
+		break;
+	case 1: //top middle
+		vertices[0].position.y = mousePos.y;
+		vertices[1].position.y = mousePos.y;
+		break;
+	case 2: //top right
+		vertices[1].position = mousePos;
+		break;
+	case 3: //middle left
+		vertices[0].position.x = mousePos.x;
+		vertices[2].position.x = mousePos.x;
+		break;
+	case 4: //middle right
+		vertices[1].position.x = mousePos.x;
+		vertices[3].position.x = mousePos.x;
+		break;
+	case 5: //bottom left
+		vertices[2].position = mousePos;
+		break;
+	case 6: //bottom middle
+		vertices[2].position.y = mousePos.y;
+		vertices[3].position.y = mousePos.y;
+		break;
+	case 7: //bottom right
+		vertices[3].position = mousePos;
+		vertices[1].position.x = mousePos.x;
+		vertices[2].position.y = mousePos.y;
+		break;
+	}
+	width = vertices[1].position.x - vertices[0].position.x;
+	height = vertices[2].position.y - vertices[0].position.y;
+	recalculateVertex();
+}
+
+// Flips position of the vertices so that width and height are always postitive
+void Entity::correctSize() {
+	if (width < 0) {
+		SDL_Vertex bufferVertex = vertices[1];
+		vertices[1] = vertices[0];
+		vertices[0] = bufferVertex;
+		bufferVertex = vertices[3];
+		vertices[3] = vertices[2];
+		vertices[2] = bufferVertex;
+		width = abs(width);
+	}
+	if (height < 0) {
+		SDL_Vertex bufferVertex = vertices[2];
+		vertices[2] = vertices[0];
+		vertices[0] = bufferVertex;
+		bufferVertex = vertices[3];
+		vertices[3] = vertices[1];
+		vertices[1] = bufferVertex;
+		height = abs(height);
+	}
+
+	position = vertices[0].position;
+	recalculateVertex();
+}
+
 void Entity::recalculateVertex() {
 	calcVertices();
 	calcShadowVertices();

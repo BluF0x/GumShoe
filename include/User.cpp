@@ -14,8 +14,10 @@ void User::renderToolPreview(SDL_Renderer* renderer) {
 	case SELECTION:
 		break;
 	case NOTE:
-		templateNote->moveTo(mousePos, true);
-		templateNote->render(renderer);
+		if (!isDragging) {
+			templateNote->moveTo(mousePos, true);
+			templateNote->render(renderer);
+		}
 		break;
 	default:
 		break;
@@ -55,6 +57,13 @@ void User::setSelection() {
 		selection = hover;
 		if (selection) selection->setSelected(true);
 	}
+}
+
+void User::setSelection(Entity* entity) {
+	selection = entity;
+	selection->setSelected(true);
+	hover = entity;
+	hover->setHover(true);
 }
 
 void User::setMousePos(float x, float y) {

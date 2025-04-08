@@ -84,37 +84,51 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             mousePos.y = event->motion.y + event->motion.yrel,
         };
 
+        (user->isButtonDown) ? user->isDragging = true : user->isDragging = false;
+
 		user->setMousePos(mousePos.x, mousePos.y);
 
-		if (user->isActive && user->getSelection() != nullptr && user->currentTool == Tools::SELECTION) {
-			// When dragging, update position without altering hover state.
-			user->getSelection()->moveTo(user->getMousePos(), false);
+		//if (user->isButtonDown && user->getSelection() != nullptr && user->currentTool == Tools::SELECTION) {
+        if (user->isDragging) {
+            if (user->currentTool == Tools::SELECTION && user->getSelection() != nullptr) {
+			    // When dragging, update position without altering hover state.
+				user->getSelection()->moveTo(user->getMousePos(), false);
+            }
+            else if (user->currentTool == Tools::NOTE) {
+                user->getSelection()->resize(7, user->getMousePos());
+                std::cout << "Hello world" << std::endl;
+
+            }
 		}
-		else {
-			// Only update hover state when not dragging.
-			user->setHover(entityManager->checkMouse(user->getMousePos()));
-		}
+        else {
+            user->setHover(entityManager->checkMouse(user->getMousePos()));
+        }
 	}
 
     // mouse button down
     else if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN) 
     {
         if (event->button.button == 1) {
+			user->isButtonDown = true;
+
             switch (user->currentTool) {
-            case 0:
-				user->isActive = true;
+            // Selection Tool
+            case Tools::SELECTION:
 				user->setSelection();
 				entityManager->forwardEntity(user->getSelection());
 				if (user->getSelection()) {
 					user->getSelection()->setRelativeDistance(user->getMousePos());
 				}
                 break;
-            case 1:
+
+            // Place note tool
+            case Tools::NOTE:
                 SDL_FColor updatedColor = user->templateNote->primaryColor;
                 updatedColor.a = 1.0f;
                 entityManager->addEntity(new Note(*user->templateNote));
-                entityManager->getLastEntity()->setColor(updatedColor);
-                
+                Entity* addedNote = entityManager->getLastEntity();
+                addedNote->setColor(updatedColor);
+                user->setSelection(addedNote);
                 break;
             }
         }
@@ -124,7 +138,11 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     else if (event->type = SDL_EVENT_MOUSE_BUTTON_UP)
     {
         if (event->button.button == 1) {
-            user->isActive = false;
+            user->isButtonDown = false;
+            if (user->currentTool == Tools::NOTE) {
+                user->getSelection()->correctSize();
+                user->changeTool(Tools::SELECTION);
+            }
         }
     }
     return SDL_APP_CONTINUE;  /* carry on with the program! */
@@ -133,7 +151,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);

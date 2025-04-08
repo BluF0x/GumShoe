@@ -20,7 +20,8 @@ private:
 
 public:
 	Note* templateNote = nullptr;
-	bool isActive = false;
+	bool isButtonDown = false;
+	bool isDragging = false;
 	enum Tools currentTool = Tools::SELECTION;
 
 	User(SDL_Color backgroundColor);
@@ -33,6 +34,7 @@ public:
 	void changeTool(Tools tool);
 	void setHover(Entity* inHover);
 	void setSelection();
+	void setSelection(Entity* entity);
 	void setMousePos(float x, float y);
 	SDL_FPoint getMousePos();
 	SDL_FPoint getDeltaPos();
