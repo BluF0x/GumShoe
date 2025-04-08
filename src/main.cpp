@@ -73,6 +73,13 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         else if (event->key.key == SDLK_2) {
             user->changeTool(Tools::NOTE);
         }
+        else if (event->key.key == SDLK_DELETE) {
+            if (user->getSelection()) {
+                entityManager->removeEntity(user->getSelection());
+                delete user->getSelection();
+                user->setSelection(nullptr);
+            }
+        }
         //std::cout << "Current tool: " << user->currentTool << std::endl;
     }
 

@@ -60,10 +60,16 @@ void User::setSelection() {
 }
 
 void User::setSelection(Entity* entity) {
-	selection = entity;
-	selection->setSelected(true);
-	hover = entity;
-	hover->setHover(true);
+	if (entity) {
+		selection = entity;
+		selection->setSelected(true);
+		hover = entity;
+		hover->setHover(true);
+	}
+	else {
+		selection = nullptr;
+		hover = nullptr;
+	}
 }
 
 void User::setMousePos(float x, float y) {

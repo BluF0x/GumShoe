@@ -11,10 +11,11 @@ private:
 
 public:
 	void addEntity(Entity* entity);
+	void renderEntities(SDL_Renderer* renderer);
+	bool forwardEntity(Entity* entity);
+	bool removeEntity(Entity* entity);
 	int getEntityIndex(Entity* entity);
 	Entity* getEntityAtIndex(int index);
 	Entity* getLastEntity();
-	bool forwardEntity(Entity* entity);
-	void renderEntities(SDL_Renderer* renderer);
 	Entity* checkMouse(SDL_FPoint mousePos);
 };
