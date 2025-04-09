@@ -57,4 +57,5 @@ bool EntityManager::removeEntity(Entity* entity) {
 	int index = getEntityIndex(entity);
 	if (index == -1) return false;
 	entityList.erase(entityList.begin() + index);
+	return true;
 }

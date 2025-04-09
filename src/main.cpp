@@ -1,7 +1,6 @@
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <vector>
 #include <iostream>
 #include <string>
 #include "Note.h"
@@ -75,9 +74,12 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
         }
         else if (event->key.key == SDLK_DELETE) {
             if (user->getSelection()) {
-                entityManager->removeEntity(user->getSelection());
-                delete user->getSelection();
-                user->setSelection(nullptr);
+                if(entityManager->removeEntity(user->getSelection())){
+                    delete user->getSelection();
+                    user->setSelection(nullptr);
+                }else{
+                    std::cout << "Failed to remove entity" << std::endl;
+                };
             }
         }
         //std::cout << "Current tool: " << user->currentTool << std::endl;
@@ -103,7 +105,6 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
             }
             else if (user->currentTool == Tools::NOTE) {
                 user->getSelection()->resize(7, user->getMousePos());
-                std::cout << "Hello world" << std::endl;
 
             }
 		}
@@ -142,7 +143,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     }
 
     // mouse button release
-    else if (event->type = SDL_EVENT_MOUSE_BUTTON_UP)
+    else if (event->type == SDL_EVENT_MOUSE_BUTTON_UP)
     {
         if (event->button.button == 1) {
             user->isButtonDown = false;
@@ -158,6 +159,8 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
+    //std::cout << user->getSelection() << std::endl;
+
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);
