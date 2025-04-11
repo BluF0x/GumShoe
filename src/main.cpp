@@ -1,10 +1,8 @@
 #include <SDL3/SDL_stdinc.h>
-#include <cstdint>
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <iostream>
-#include <string>
 #include "Note.h"
 #include "EntityManager.h"
 #include "User.h"
@@ -180,16 +178,9 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 /* This function runs once per frame, and is the heart of the program. */
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
-    //std::cout << user->getSelection() << std::endl;
-    std::cout << user->resizeNumber << std::endl;
-
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);
     SDL_RenderClear(renderer);
-
-    std::string deltaPosStr = std::to_string(user->getMousePos().x);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-    SDL_RenderDebugText(renderer, 272, 100, deltaPosStr.c_str());
 
     entityManager->renderEntities(renderer);
     user->renderToolPreview(renderer);

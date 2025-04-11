@@ -2,6 +2,7 @@
 #include <SDL3/SDL_bits.h>
 #include <SDL3/SDL_stdinc.h>
 #include <cstdint>
+#include <iostream>
 
 void Entity::render(SDL_Renderer* renderer) {
 	if (isVisible) {

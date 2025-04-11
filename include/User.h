@@ -3,7 +3,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_mouse.h>
 #include <SDL3/SDL_stdinc.h>
-#include <cstdint>
 #include "Entity.h"
 #include "Note.h"
 
