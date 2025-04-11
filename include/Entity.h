@@ -1,5 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_stdinc.h>
+#include <cstdint>
 #include <iostream>
 
 class Entity
@@ -28,8 +30,10 @@ public:
 	virtual void setColor(SDL_FColor color);
 	virtual void changeZ(float z);
 	
+	
 	void correctSize();
 	void resize(int direction, SDL_FPoint mousePos);
+	int8_t  checkResize(SDL_FPoint mousePos);
 	void calcShadowVertices();
 	void recalculateVertex();
 	void setRelativeDistance(SDL_FPoint point);

@@ -1,5 +1,6 @@
 #include "User.h"
 #include "Note.h"
+#include <SDL3/SDL_mouse.h>
 
 Entity* User::getHover() {
 	return hover;
@@ -25,16 +26,54 @@ void User::renderToolPreview(SDL_Renderer* renderer) {
 }
 
 void User::changeTool(Tools tool) {
+	SDL_SystemCursor cursorID = SDL_SYSTEM_CURSOR_DEFAULT;
+
 	switch (tool) {
-	case SELECTION:
-		SDL_ShowCursor();
-		currentTool = Tools::SELECTION;
-		break;
-	case NOTE:
-		SDL_HideCursor();
-		currentTool = Tools::NOTE;
-		break;
-	}
+        case SELECTION:
+          SDL_ShowCursor();
+          currentTool = Tools::SELECTION;
+          hover ? cursorID = SDL_SYSTEM_CURSOR_POINTER
+                : cursorID = SDL_SYSTEM_CURSOR_DEFAULT;
+          break;
+        case NOTE:
+          SDL_HideCursor();
+          currentTool = Tools::NOTE;
+          break;
+        case RESIZE:
+          currentTool = Tools::RESIZE;
+
+          switch (resizeNumber) {
+			case 0:
+				cursorID = SDL_SYSTEM_CURSOR_NW_RESIZE;
+				break;
+			case 1:
+				cursorID = SDL_SYSTEM_CURSOR_N_RESIZE;
+				break;
+			case 2:
+				cursorID = SDL_SYSTEM_CURSOR_NE_RESIZE;
+				break;
+			case 3:
+				cursorID = SDL_SYSTEM_CURSOR_W_RESIZE;
+				break;
+			case 4:
+				cursorID = SDL_SYSTEM_CURSOR_E_RESIZE;
+				break;
+			case 5:
+				cursorID = SDL_SYSTEM_CURSOR_SW_RESIZE;
+				break;
+			case 6:
+				cursorID = SDL_SYSTEM_CURSOR_S_RESIZE;
+				break;
+			case 7:
+				cursorID = SDL_SYSTEM_CURSOR_SE_RESIZE;
+				break;
+			default:
+				cursorID = SDL_SYSTEM_CURSOR_NWSE_RESIZE;
+        }
+    }
+
+    cursor = SDL_CreateSystemCursor(cursorID);
+	SDL_SetCursor(cursor);
 }
 
 void User::setHover(Entity* inHover) {

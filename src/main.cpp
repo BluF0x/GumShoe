@@ -1,3 +1,5 @@
+#include <SDL3/SDL_stdinc.h>
+#include <cstdint>
 #define SDL_MAIN_USE_CALLBACKS 1  /* use the callbacks instead of main() */
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
@@ -107,9 +109,22 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
                 user->getSelection()->resize(7, user->getMousePos());
 
             }
+            else if (user->currentTool == Tools::RESIZE) {
+                Entity* userSelection = user->getSelection();
+                userSelection->resize(user->resizeNumber, user->getMousePos());
+            }
 		}
         else {
-            user->setHover(entityManager->checkMouse(user->getMousePos()));
+            if (user->currentTool != Tools::NOTE){
+                user->setHover(entityManager->checkMouse(user->getMousePos()));
+                Entity* userHover = user->getHover();
+
+                userHover ? user->resizeNumber = userHover->checkResize(mousePos)
+                          : user->resizeNumber = -1;
+
+                (user->resizeNumber > -1) ? user->changeTool(Tools::RESIZE) 
+                                          : user->changeTool(Tools::SELECTION);
+            }
         }
 	}
 
@@ -120,24 +135,30 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 			user->isButtonDown = true;
 
             switch (user->currentTool) {
-            // Selection Tool
-            case Tools::SELECTION:
-				user->setSelection();
-				entityManager->forwardEntity(user->getSelection());
-				if (user->getSelection()) {
-					user->getSelection()->setRelativeDistance(user->getMousePos());
-				}
-                break;
+                // Selection Tool
+                case Tools::SELECTION:
+                    user->setSelection();
+                    entityManager->forwardEntity(user->getSelection());
+                    if (user->getSelection()) {
+                        user->getSelection()->setRelativeDistance(user->getMousePos());
+                    }
+                    break;
 
-            // Place note tool
-            case Tools::NOTE:
-                SDL_FColor updatedColor = user->templateNote->primaryColor;
-                updatedColor.a = 1.0f;
-                entityManager->addEntity(new Note(*user->templateNote));
-                Entity* addedNote = entityManager->getLastEntity();
-                addedNote->setColor(updatedColor);
-                user->setSelection(addedNote);
-                break;
+                // Place note tool
+                case Tools::NOTE:{
+                    SDL_FColor updatedColor = user->templateNote->primaryColor;
+                    updatedColor.a = 1.0f;
+                    entityManager->addEntity(new Note(*user->templateNote));
+                    Entity* addedNote = entityManager->getLastEntity();
+                    addedNote->setColor(updatedColor);
+                    user->setSelection(addedNote);
+                    break;
+
+                }
+                case Tools::RESIZE:
+                    user->setSelection();
+                    entityManager->forwardEntity(user->getSelection());
+                    break;
             }
         }
     }
@@ -147,7 +168,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
     {
         if (event->button.button == 1) {
             user->isButtonDown = false;
-            if (user->currentTool == Tools::NOTE) {
+            if (user->currentTool == Tools::NOTE || user->currentTool == Tools::RESIZE) {
                 user->getSelection()->correctSize();
                 user->changeTool(Tools::SELECTION);
             }
@@ -160,6 +181,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
 SDL_AppResult SDL_AppIterate(void* appstate)
 {
     //std::cout << user->getSelection() << std::endl;
+    std::cout << user->resizeNumber << std::endl;
 
     /* clear the window to the draw color. */
     SDL_SetRenderDrawColor(renderer, 138, 121, 81, 255);

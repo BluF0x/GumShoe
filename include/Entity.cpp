@@ -1,4 +1,7 @@
 #include "Entity.h"
+#include <SDL3/SDL_bits.h>
+#include <SDL3/SDL_stdinc.h>
+#include <cstdint>
 
 void Entity::render(SDL_Renderer* renderer) {
 	if (isVisible) {
@@ -49,29 +52,30 @@ void Entity::calcShadowVertices() {
 }
 
 void Entity::resize(int direction, SDL_FPoint mousePos) {
-	setRelativeDistance(mousePos);
-	switch (direction) {
+	// std::cout << "width: " << width << std::endl;
+	// std::cout << "height: " << height << std::endl;
+	switch(direction) {
 	case 0: //top left
 		position = mousePos;
-		width += abs(relativeDistance.x);
-		height += abs(relativeDistance.y);
+		vertices[0].position = mousePos;	
 		break;
 	case 1: //top middle
 		vertices[0].position.y = mousePos.y;
-		vertices[1].position.y = mousePos.y;
 		break;
 	case 2: //top right
+		vertices[0].position.y = mousePos.y;
 		vertices[1].position = mousePos;
 		break;
 	case 3: //middle left
+		position.x =  mousePos.x;
 		vertices[0].position.x = mousePos.x;
-		vertices[2].position.x = mousePos.x;
 		break;
 	case 4: //middle right
 		vertices[1].position.x = mousePos.x;
 		vertices[3].position.x = mousePos.x;
 		break;
 	case 5: //bottom left
+		vertices[0].position.x = mousePos.x;
 		vertices[2].position = mousePos;
 		break;
 	case 6: //bottom middle
@@ -84,6 +88,7 @@ void Entity::resize(int direction, SDL_FPoint mousePos) {
 		vertices[2].position.y = mousePos.y;
 		break;
 	}
+	position = vertices[0].position;
 	width = vertices[1].position.x - vertices[0].position.x;
 	height = vertices[2].position.y - vertices[0].position.y;
 	recalculateVertex();
@@ -112,6 +117,53 @@ void Entity::correctSize() {
 
 	position = vertices[0].position;
 	recalculateVertex();
+}
+
+int8_t Entity::checkResize(SDL_FPoint mousePos) {
+	float halfHeight = height/2;
+	float halfWidth = width/2;
+	float borderSize = 10.0f;
+
+	SDL_FPoint centerPoint = {
+		position.x + halfWidth, 
+		position.y + halfHeight 
+	};
+
+	bool verticalCheck = (mousePos.x <= position.x + borderSize || mousePos.x >= position.x + width - borderSize );
+	bool horizontalCheck = (mousePos.y <= position.y + borderSize || mousePos.y >= position.y + height - borderSize);
+
+
+	// checks if corner
+	if (verticalCheck && horizontalCheck){
+		// checks which quadrant is selected
+		if ( mousePos.x < centerPoint.x && mousePos.y < centerPoint.y){
+			return 0;
+		}
+		else if (mousePos.x > centerPoint.x && mousePos.y < centerPoint.y) {
+			return 2;
+		}
+		else if (mousePos.x < centerPoint.x && mousePos.y > centerPoint.y) {
+			return 5;
+		}
+		else if (mousePos.x > centerPoint.x && mousePos.y > centerPoint.y) {
+			return 7;
+		}
+		
+	}else if (horizontalCheck) {
+		if (mousePos.y > centerPoint.y) {
+			return 6;
+		} else {
+			return 1;
+		}
+	}else if (verticalCheck) {
+		if (mousePos.x < centerPoint.x) {
+			return 3;
+		} else {
+			return 4;
+		}
+	}
+
+	return -1;
 }
 
 void Entity::recalculateVertex() {
